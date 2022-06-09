@@ -1,0 +1,207 @@
+#workbenchPageContent {
+  max-width: 100%;
+}
+
+// * {
+//   margin: 0;
+//   padding: 0;
+//   box-sizing: border-box;
+// }
+
+// #NWFquoterequest {
+//   display: flex;
+//   flex-direction: column;
+
+//   .main-head1 {
+//     margin-bottom: 22px;
+
+//     .txtClassArrow {
+//       display: inline-flex;
+//       border-radius: 50%;
+//       padding: 3px;
+//      // background: #d71e2b;
+
+//       .txtClassArrowIcon {
+//         //color: white !important;
+//         width: 20px !important;
+//         height: 20px !important;
+//       }
+//     }
+
+//     .txtClassHead {
+//       font-size: 20px;
+//       font-weight: 700;
+//       color: #003c7c;
+//       position: relative;
+//       left: 50px;
+//     }
+//   }
+
+//   .maincont {
+//     // margin-top: 50px;
+//     //background: #ffffff;
+//     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+//     border-radius: 5px;
+//     padding: 50px 20px;
+//     display: flex;
+//     flex-direction: column;
+
+//     .hr {
+//       border: none;
+//       border-top: 1px solid #afafaf;
+//     }
+
+//     .hr1 {
+//       margin-bottom: 30px;
+//     }
+
+//     .hr2 {
+//       margin-top: 25px;
+//     }
+
+//     // .separatorline {
+//     //   background-color: #5c5c5c !important;
+//     //   height: 1px !important;
+//     //   content: "" !important;
+//     //   display: block !important;
+//     //   position: absolute !important;
+//     //   inset: 50% 0px 0px !important;
+//     // }
+//     .peoplepicker {
+//       margin-bottom: 25px;
+//       width: unset !important;
+
+//       .defaultClass_2aa377e2 {
+//         display: flex;
+//       }
+
+//       .ms-BasePicker-text {
+//         //border: 1px solid #d71e2b !important;
+//         width: 273px;
+//         height: 28px;
+//       }
+
+//       .ms-Label {
+//         font-weight: 600;
+//         width: 253px;
+//       }
+//     }
+
+//     .roww {
+//       margin-bottom: 35px;
+
+//       .half-row {
+//         display: flex;
+//         align-items: center;
+
+//         .scopebox .ms-TextField-fieldGroup {
+//           height: 60px !important;
+//         }
+
+//         .choosefile input {
+//           width: 334px;
+//           height: 28px;
+//           //border: 1px solid #d71e2b;
+//           border-radius: 2px;
+//           padding: 0 12px;
+//           outline: none;
+//         }
+
+//         .choosebtn button {
+//           padding: 5px 20px;
+//           margin-left: 94px;
+//           border-radius: 4px;
+//           border: none;
+//           cursor: pointer;
+//           //background-color: #d71e2b;
+//           //color: white;
+//         }
+//       }
+
+//       .labelname {
+//         width: 44% !important;
+
+//         .txtClass {
+//           font-weight: 600;
+//         }
+//       }
+
+//       .ms-TextField-fieldGroup,
+//       .peoplepicker .ms-PeoplePicker .ms-BasePicker-text {
+//         //border: 1px solid #d71e2b;
+//         border-radius: 2px;
+//         height: 28px;
+//       }
+
+//       .peoplepicker .ms-TooltipHost .defaultClass_2aa377e2 label {
+//         font-weight: 600 !important;
+//       }
+
+//       .choicegroup-NWFquote .ms-ChoiceFieldGroup-flexContainer {
+//         display: flex;
+
+//         .ms-ChoiceField {
+//           margin-top: 0;
+//           .ms-ChoiceField-field {
+//             &::before {
+//               //border-color: #d71e2b;
+//             }
+
+//             &::after {
+//               //border-color: #d71e2b;
+//             }
+//           }
+
+//           &:nth-child(2) {
+//             margin-left: 50px;
+//           }
+//         }
+//       }
+
+//       .peoplepicker label {
+//         font-weight: 600;
+//       }
+//     }
+
+//     .rowww {
+//       margin-top: 20px;
+
+//       .btn-rowww {
+//         text-align: end;
+
+//         .btn-rowww-in {
+//           width: 240px;
+//         }
+
+//         .save-btn Button {
+//           // float: right !important;
+//           width: 103px !important;
+//           //background: #d71e2b;
+//           border-radius: 4px;
+//         }
+
+//         .cancel-btn button {
+//           width: 103px !important;
+//           border-radius: 4px;
+//         }
+//       }
+//     }
+//   }
+// }
+.customfileupload {
+
+  border:1px solid #c0c0c0;
+
+  &::-webkit-file-upload-button {
+
+    color: #000 !important;
+
+    // background-color: #004fa2 !important;
+
+    padding: 0.4rem 1rem;
+
+    border: none;
+
+    border-radius: none;}
+
+}

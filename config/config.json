@@ -1,0 +1,28 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "nwf-dashboard-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/nwfDashboard/NwfDashboardWebPart.js",
+          "manifest": "./src/webparts/nwfDashboard/NwfDashboardWebPart.manifest.json"
+        }
+      ]
+    },
+    "nwf-quote-request-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/nwfQuoteRequest/NwfQuoteRequestWebPart.js",
+          "manifest": "./src/webparts/nwfQuoteRequest/NwfQuoteRequestWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "NwfDashboardWebPartStrings": "lib/webparts/nwfDashboard/loc/{locale}.js",
+    "NwfQuoteRequestWebPartStrings": "lib/webparts/nwfQuoteRequest/loc/{locale}.js",
+    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js"
+  }
+}

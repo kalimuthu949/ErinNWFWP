@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "nwf-dashboard-client-side-solution",
+    "id": "4bd1dcda-5dd8-4d34-8fbe-b035decf124c",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "isDomainIsolated": false
+  },
+  "paths": {
+    "zippedPackage": "solution/nwf-dashboard.sppkg"
+  }
+}

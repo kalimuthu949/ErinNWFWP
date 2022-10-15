@@ -486,9 +486,14 @@ export default function NWDashBoardAdmin(
         items=[];
         for (var k = 0; k < data.length; k++) 
         {   
-          
           var userBelongsToNWFCompany=allUsers.find(x => x.ID === data[k].Author.ID).ID;
-          if(userBelongsToNWFCompany)
+          var isUsersSharedForthisdata=false;
+          if(data[k].SharedWith)
+          {
+            console.log(data[k].SharedWith)
+            isUsersSharedForthisdata=data[k].SharedWith.find(x => x.EMail === UserEmail).ID
+          }
+          if(userBelongsToNWFCompany||(isUsersSharedForthisdata!=false))
           {
             var newitem: IColumns = {
               Title: data[k].Title,

@@ -490,7 +490,6 @@ export default function NWDashBoardAdmin(
           var isUsersSharedForthisdata=false;
           if(data[k].SharedWith)
           {
-            console.log(data[k].SharedWith)
             isUsersSharedForthisdata=data[k].SharedWith.find(x => x.EMail === UserEmail).ID
           }
           if(userBelongsToNWFCompany||(isUsersSharedForthisdata!=false))

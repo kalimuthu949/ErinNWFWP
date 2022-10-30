@@ -378,13 +378,13 @@ export default function NWDashBoardAdmin(
               paginate(page)
             }}
           />
-          {/* <DetailsList
-          columns={_columns}
-          items={rows}
-          selectionMode={SelectionMode.none}
-          //onRenderItemColumn={_renderItemColumn}
-        /> */}
-          <ScrollablePane
+          <DetailsList
+            columns={_columns}
+            items={rows}
+            selectionMode={SelectionMode.none}
+            //onRenderItemColumn={_renderItemColumn}
+          />
+          {/* <ScrollablePane
             scrollbarVisibility={ScrollbarVisibility.auto}
             styles={{
               root: {
@@ -438,7 +438,7 @@ export default function NWDashBoardAdmin(
                 )
               }}
             />
-          </ScrollablePane>
+          </ScrollablePane> */}
         </div>
       ) : (
         <div style={{ fontWeight: 'bold', textAlign: 'center' }}>
@@ -566,9 +566,13 @@ export default function NWDashBoardAdmin(
           ).ID
           var isUsersSharedForthisdata = false
           if (data[k].SharedWith) {
-            isUsersSharedForthisdata = data[k].SharedWith.find(
-              (x) => x.EMail === UserEmail,
-            ).ID
+            try {
+              isUsersSharedForthisdata = data[k].SharedWith.find(
+                (x) => x.EMail === UserEmail,
+              ).ID
+            } catch (e) {
+              console.log(e)
+            }
           }
           if (userBelongsToNWFCompany || isUsersSharedForthisdata != false) {
             var newitem: IColumns = {

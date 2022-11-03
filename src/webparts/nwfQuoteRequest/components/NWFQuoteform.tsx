@@ -1,26 +1,26 @@
-import * as React from "react";
-import { useState, useCallback, useRef, useEffect } from "react";
+import * as React from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import {
   BaseClientSideWebPart,
   WebPartContext,
-} from "@microsoft/sp-webpart-base";
-import { INwfQuoteRequestProps } from "./INwfQuoteRequestProps";
-import { FontSizes } from "@fluentui/theme";
-import { TextField, MaskedTextField } from "@fluentui/react/lib/TextField";
-import { Separator } from "office-ui-fabric-react/lib/Separator";
-import { Text, ITextProps } from "@fluentui/react/lib/Text";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+} from '@microsoft/sp-webpart-base'
+import { INwfQuoteRequestProps } from './INwfQuoteRequestProps'
+import { FontSizes } from '@fluentui/theme'
+import { TextField, MaskedTextField } from '@fluentui/react/lib/TextField'
+import { Separator } from 'office-ui-fabric-react/lib/Separator'
+import { Text, ITextProps } from '@fluentui/react/lib/Text'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import {
   ChoiceGroup,
   IChoiceGroupOption,
-} from "@fluentui/react/lib/ChoiceGroup";
-import { DefaultButton, PrimaryButton } from "@fluentui/react/lib/Button";
-import { Spinner, SpinnerSize } from "@fluentui/react/lib/Spinner";
-import { Dialog, DialogType, DialogFooter } from "@fluentui/react/lib/Dialog";
+} from '@fluentui/react/lib/ChoiceGroup'
+import { DefaultButton, PrimaryButton } from '@fluentui/react/lib/Button'
+import { Spinner, SpinnerSize } from '@fluentui/react/lib/Spinner'
+import { Dialog, DialogType, DialogFooter } from '@fluentui/react/lib/Dialog'
 import {
   PeoplePicker,
   PrincipalType,
-} from "@pnp/spfx-controls-react/lib/PeoplePicker";
+} from '@pnp/spfx-controls-react/lib/PeoplePicker'
 import {
   Icon,
   loadTheme,
@@ -29,170 +29,168 @@ import {
   ThemeProvider,
   Label,
   classNamesFunction,
-} from "@fluentui/react";
+} from '@fluentui/react'
 
 // import "office-ui-fabric-react/dist/css/fabric.css";
-import styles from "./NwfQuoteRequest.module.scss";
-import "./style.scss";
+import styles from './NwfQuoteRequest.module.scss'
+import './style.scss'
 // import { Hidden } from "@material-ui/core";
 import {
   DatePicker,
   IDatePicker,
   mergeStyleSets,
   defaultDatePickerStrings,
-} from "@fluentui/react";
+} from '@fluentui/react'
 // import styles from "./style.scss";
-import {PeoplesData} from "./PeoplesData";
-let getSelectedUsers: number[] = [];
-let arrAccManager: number[] = [];
-let NextOrderID: string = "";
+import { PeoplesData } from './PeoplesData'
+let getSelectedUsers: number[] = []
+let arrAccManager: number[] = []
+let NextOrderID: string = ''
 const dialogContentProps = {
   type: DialogType.normal,
-  title: "Form Submitted Successfully",
-};
-var FormFilled: boolean = false;
+  title: 'Form Submitted Successfully',
+}
+var FormFilled: boolean = false
 interface formvalues {
-  FirstName: string;
-  LastName: string;
-  Title: string;
-  CompanyName: string;
-  EmailId: string;
-  PhoneNumber: string;
-  Address: string;
-  CompanyWebsite: string;
-  LyAccMngr: string;
-  ProposalReq: string;
-  WorkBegin: string;
-  WorkComplete: string;
-  ImpoDate: string;
-  Description: string;
-  AdditionalDetails: string;
-  Scope: string;
-  SharedLinks: string;
-  TypesoBid: string;
-  RemoteConn: boolean;
-  GraphicsReq: boolean;
-  NigVersion: boolean;
-  versionhistory:string;
-  Speciality: boolean;
-  UserDetailsId: string | Number[] | any;
-  Attachments: string[];
+  FirstName: string
+  LastName: string
+  Title: string
+  CompanyName: string
+  EmailId: string
+  PhoneNumber: string
+  Address: string
+  CompanyWebsite: string
+  LyAccMngr: string
+  ProposalReq: string
+  WorkBegin: string
+  WorkComplete: string
+  ImpoDate: string
+  Description: string
+  AdditionalDetails: string
+  Scope: string
+  SharedLinks: string
+  TypesoBid: string
+  RemoteConn: boolean
+  GraphicsReq: boolean
+  NigVersion: boolean
+  versionhistory: string
+  Speciality: boolean
+  UserDetailsId: string | Number[] | any
+  Attachments: string[]
 }
 const wellsFargoTheme = createTheme({
   palette: {
-    themePrimary: "#004fa2",
-    themeLighterAlt: "#f1f6fb",
-    themeLighter: "#cadcf0",
-    themeLight: "#9fc0e3",
-    themeTertiary: "#508ac8",
-    themeSecondary: "#155fae",
-    themeDarkAlt: "#004793",
-    themeDark: "#003c7c",
-    themeDarker: "#002c5b",
-    neutralLighterAlt: "#faf9f8",
-    neutralLighter: "#f3f2f1",
-    neutralLight: "#edebe9",
-    neutralQuaternaryAlt: "#e1dfdd",
-    neutralQuaternary: "#d0d0d0",
-    neutralTertiaryAlt: "#c8c6c4",
-    neutralTertiary: "#a19f9d",
-    neutralSecondary: "#605e5c",
-    neutralPrimaryAlt: "#3b3a39",
-    neutralPrimary: "#323130",
-    neutralDark: "#201f1e",
-    black: "#000000",
-    white: "#ffffff",
+    themePrimary: '#004fa2',
+    themeLighterAlt: '#f1f6fb',
+    themeLighter: '#cadcf0',
+    themeLight: '#9fc0e3',
+    themeTertiary: '#508ac8',
+    themeSecondary: '#155fae',
+    themeDarkAlt: '#004793',
+    themeDark: '#003c7c',
+    themeDarker: '#002c5b',
+    neutralLighterAlt: '#faf9f8',
+    neutralLighter: '#f3f2f1',
+    neutralLight: '#edebe9',
+    neutralQuaternaryAlt: '#e1dfdd',
+    neutralQuaternary: '#d0d0d0',
+    neutralTertiaryAlt: '#c8c6c4',
+    neutralTertiary: '#a19f9d',
+    neutralSecondary: '#605e5c',
+    neutralPrimaryAlt: '#3b3a39',
+    neutralPrimary: '#323130',
+    neutralDark: '#201f1e',
+    black: '#000000',
+    white: '#ffffff',
   },
-});
+})
 const inlineChoiceStyles = {
   flexContainer: {
-    display: "flex",
+    display: 'flex',
     label: {
-      marginRight: "1rem",
+      marginRight: '1rem',
     },
   },
-};
-const formRowStyle = { display: "flex", width: "100%", margin: ".5rem" };
-const formColumnStyle = { width: "24%", margin: "0rem 0.5rem" };
+}
+const formRowStyle = { display: 'flex', width: '100%', margin: '.5rem' }
+const formColumnStyle = { width: '24%', margin: '0rem 0.5rem' }
 function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
-  let siteURL = props.context.pageContext.web.absoluteUrl;
-  let UserEmail=props.context.pageContext.user.email;
+  let siteURL = props.context.pageContext.web.absoluteUrl
+  let UserEmail = props.context.pageContext.user.email
   const intialvalues: formvalues[] = [
     {
-      FirstName: "",
-      LastName: "",
-      Title: "",
-      CompanyName: "",
-      EmailId: "",
-      PhoneNumber: "",
-      Address: "",
-      CompanyWebsite: "",
-      LyAccMngr: "",
-      ProposalReq: "",
-      WorkBegin: "",
-      WorkComplete: "",
-      ImpoDate: "",
-      Description: "",
-      AdditionalDetails: "",
-      Scope: "",
-      SharedLinks: "",
-      UserDetailsId: "",
-      TypesoBid: "",
+      FirstName: '',
+      LastName: '',
+      Title: '',
+      CompanyName: '',
+      EmailId: '',
+      PhoneNumber: '',
+      Address: '',
+      CompanyWebsite: '',
+      LyAccMngr: '',
+      ProposalReq: '',
+      WorkBegin: '',
+      WorkComplete: '',
+      ImpoDate: '',
+      Description: '',
+      AdditionalDetails: '',
+      Scope: '',
+      SharedLinks: '',
+      UserDetailsId: '',
+      TypesoBid: '',
       RemoteConn: false,
       GraphicsReq: false,
       NigVersion: false,
-      versionhistory:"",
+      versionhistory: '',
       Speciality: false,
       Attachments: [],
     },
-  ];
+  ]
 
   const intialvalidations: formvalues[] = [
     {
-      FirstName: "",
-      LastName: "",
-      Title: "",
-      CompanyName: "",
-      EmailId: "",
-      PhoneNumber: "",
-      Address: "",
-      CompanyWebsite: "",
-      LyAccMngr: "",
-      ProposalReq: "",
-      WorkBegin: "",
-      WorkComplete: "",
-      ImpoDate: "",
-      Description: "",
-      AdditionalDetails: "",
-      Scope: "",
-      SharedLinks: "",
-      UserDetailsId: "",
-      TypesoBid: "",
+      FirstName: '',
+      LastName: '',
+      Title: '',
+      CompanyName: '',
+      EmailId: '',
+      PhoneNumber: '',
+      Address: '',
+      CompanyWebsite: '',
+      LyAccMngr: '',
+      ProposalReq: '',
+      WorkBegin: '',
+      WorkComplete: '',
+      ImpoDate: '',
+      Description: '',
+      AdditionalDetails: '',
+      Scope: '',
+      SharedLinks: '',
+      UserDetailsId: '',
+      TypesoBid: '',
       RemoteConn: false,
       GraphicsReq: false,
       NigVersion: false,
-      versionhistory:"",
+      versionhistory: '',
       Speciality: false,
       Attachments: [],
     },
-  ];
+  ]
 
   const onFormatDate = (date?: Date): string => {
-    return (
-      date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear()
-    );
-  };
+    return date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear()
+  }
 
   //const arrVlidations:formvalues[]=intialvalidations;
 
   //const arrValues:formvalues[]=intialvaluestemp;
-  const [beginDate, setbeginDate] = useState<Date | undefined>(new Date());
+  const [beginDate, setbeginDate] = useState<Date | undefined>(new Date())
   const [completionDate, setcompletionDate] = useState<Date | undefined>(
-    new Date()
-  );
-  const [ProposalDate, setProposalDate] = useState<Date | undefined>(new Date());
-  const [Column, setColumn] = useState(true);
-  const [Hidedialog, setHidedialog] = useState(true);
+    new Date(),
+  )
+  const [ProposalDate, setProposalDate] = useState<Date | undefined>(new Date())
+  const [Column, setColumn] = useState(true)
+  const [Hidedialog, setHidedialog] = useState(true)
 
   ///const[FormFilled,setFormFilled]=useState(false);
 
@@ -200,70 +198,74 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
   //const[Submitvalues,setSubmitvalues]=useState(arrValues);
 
   const [Validation, setValidation] = useState<formvalues[] | undefined>(
-    intialvalidations
-  );
+    intialvalidations,
+  )
   const [Submitvalues, setSubmitvalues] = useState<formvalues[] | undefined>(
-    intialvalues
-  );
+    intialvalues,
+  )
 
   const options: IChoiceGroupOption[] = [
-    { key: "A", text: "Yes" },
-    { key: "B", text: "No" },
-  ];
+    { key: 'A', text: 'Yes' },
+    { key: 'B', text: 'No' },
+  ]
 
   let optionsForBid: IChoiceGroupOption[] = [
-    { key: "1", text: "Owner Direct" },
-    { key: "2", text: "dfhd/Competitive" },
-  ];
+    { key: '1', text: 'Owner Direct' },
+    { key: '2', text: 'dfhd/Competitive' },
+  ]
 
-  const [Selectedpeoples,setSelectedpeoples]=useState([]);
-  const [bidTypes,setBidTypes]=useState(optionsForBid);
-  const [niaversion,setniaversion]=useState(false);
+  const [Selectedpeoples, setSelectedpeoples] = useState([])
+  const [bidTypes, setBidTypes] = useState(optionsForBid)
+  const [niaversion, setniaversion] = useState(false)
   useEffect(() => {
-    getLastID();
-    getBidTypes();
+    getLastID()
+    getBidTypes()
     setTimeout(() => {
-      setColumn(false);
-    }, 2000);
-  }, []);
+      setColumn(false)
+    }, 2000)
+  }, [])
 
   return (
     <ThemeProvider theme={wellsFargoTheme}>
-      <div id="NWFquoterequest" className={styles.nwfQuoteRequest} style={{ margin: "1rem 2rem" }}>
+      <div
+        id="NWFquoterequest"
+        className={styles.nwfQuoteRequest}
+        style={{ margin: '1rem 2rem' }}
+      >
         {Column && (
           <Spinner
             label="Loading items..."
             size={SpinnerSize.large}
             style={{
-              width: "100vw",
-              height: "100vh",
-              position: "fixed",
+              width: '100vw',
+              height: '100vh',
+              position: 'fixed',
               top: 0,
               left: 0,
-              backgroundColor: "#fff",
+              backgroundColor: '#fff',
               zIndex: 10000,
             }}
           />
         )}
         <div className="ms-Grid" dir="ltr">
-          <div style={{ display: "flex", alignItems: "center", width: "100%" }}>
+          <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
             <Icon
               iconName="NavigateBack"
               onClick={DialogBox}
               styles={{
                 root: {
                   color: wellsFargoTheme.palette.themePrimary,
-                  fontSize: "2rem",
-                  cursor: "pointer",
+                  fontSize: '2rem',
+                  cursor: 'pointer',
                 },
               }}
             />
             <h2
               style={{
-                color: "#004fa2",
-                fontWeight: "bold",
-                textAlign: "center",
-                width: "100%",
+                color: '#004fa2',
+                fontWeight: 'bold',
+                textAlign: 'center',
+                width: '100%',
               }}
             >
               Professional Services Quote
@@ -275,7 +277,7 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
                 <TextField
                   label="First Name"
                   id="txtDeviceCount"
-                  name={"FirstName"}
+                  name={'FirstName'}
                   onChange={(e) => handlechange(e)}
                   required
                   errorMessage={Validation[0].FirstName}
@@ -285,7 +287,7 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
                 <TextField
                   label="Last Name"
                   id="txtPointCount"
-                  name={"LastName"}
+                  name={'LastName'}
                   onChange={(e) => handlechange(e)}
                   required
                   errorMessage={Validation[0].LastName}
@@ -295,7 +297,7 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
                 <TextField
                   label="Title"
                   id="txtDrivers"
-                  name={"Title"}
+                  name={'Title'}
                   onChange={(e) => handlechange(e)}
                   required
                   errorMessage={Validation[0].Title}
@@ -305,7 +307,7 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
                 <TextField
                   label="Company Name"
                   id="txtSpecialConsiderations"
-                  name={"CompanyName"}
+                  name={'CompanyName'}
                   onChange={(e) => handlechange(e)}
                   required
                   errorMessage={Validation[0].CompanyName}
@@ -313,11 +315,11 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
               </div>
             </div>
             <div style={formRowStyle}>
-            <div style={formColumnStyle}>
+              <div style={formColumnStyle}>
                 <TextField
                   label="Company Website"
                   id="txtManagerEmailID"
-                  name={"CompanyWebsite"}
+                  name={'CompanyWebsite'}
                   onChange={(e) => handlechange(e)}
                   required
                   errorMessage={Validation[0].CompanyWebsite}
@@ -327,7 +329,7 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
                 <TextField
                   label="E-mail ID"
                   id="txtBEName"
-                  name={"EmailId"}
+                  name={'EmailId'}
                   onChange={(e) => handlechange(e)}
                   required
                   errorMessage={Validation[0].EmailId}
@@ -337,7 +339,7 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
                 <TextField
                   label="Phone Number"
                   id="txtBENumber"
-                  name={"PhoneNumber"}
+                  name={'PhoneNumber'}
                   type="number"
                   onChange={(e) => handlechange(e)}
                   required
@@ -350,14 +352,13 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
                   id="txtManagerName"
                   multiline
                   rows={3}
-                  name={"Address"}
+                  name={'Address'}
                   resizable={false}
                   onChange={(e) => handlechange(e)}
                   required
                   errorMessage={Validation[0].Address}
                 />
               </div>
-             
             </div>
             <div style={formRowStyle}>
               <div style={formColumnStyle}>
@@ -365,7 +366,7 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
                   context={props.context as any}
                   personSelectionLimit={1}
                   titleText="Lynxspring Account Manager"
-                  groupName={"AccountManager"} // Leave this blank in case you want to filter from all users
+                  groupName={'AccountManager'} // Leave this blank in case you want to filter from all users
                   showtooltip={true}
                   required
                   errorMessage={Validation[0].LyAccMngr}
@@ -394,12 +395,12 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
                   errorMessage={Validation[0].ProposalReq}
                 />*/}
                 <DatePicker
-                label="When is Proposal required"
-                value={ProposalDate}
-                isRequired
-                onSelectDate={setProposalDate as (date?: Date) => void}
-                formatDate={onFormatDate}
-              />
+                  label="When is Proposal required"
+                  value={ProposalDate}
+                  isRequired
+                  onSelectDate={setProposalDate as (date?: Date) => void}
+                  formatDate={onFormatDate}
+                />
               </div>
               <div style={formColumnStyle}>
                 <DatePicker
@@ -444,7 +445,7 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
                   rows={3}
                   resizable={false}
                   id="txtVendorManagerName"
-                  name={"ImpoDate"}
+                  name={'ImpoDate'}
                   onChange={(e) => handlechange(e)}
                   required
                   errorMessage={Validation[0].ImpoDate}
@@ -457,7 +458,7 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
                   rows={3}
                   resizable={false}
                   id="txtVendorManagerEmailID"
-                  name={"Description"}
+                  name={'Description'}
                   onChange={(e) => handlechange(e)}
                   required
                   errorMessage={Validation[0].Description}
@@ -470,7 +471,7 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
                   rows={3}
                   resizable={false}
                   id="txtVendorManagerName"
-                  name={"AdditionalDetails"}
+                  name={'AdditionalDetails'}
                   onChange={(e) => handlechange(e)}
                   required
                   errorMessage={Validation[0].AdditionalDetails}
@@ -534,7 +535,10 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
                   required={true}
                 />
               </div>
-              <div style={formColumnStyle} className={`niagaraversion ${styles.niagaraversion}`}>
+              <div
+                style={formColumnStyle}
+                className={`niagaraversion ${styles.niagaraversion}`}
+              >
                 <ChoiceGroup
                   styles={inlineChoiceStyles}
                   label="Niagara Versions"
@@ -545,22 +549,28 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
                   // label="Pick one"
                   required={true}
                 />
-                {niaversion?<TextField
-                styles={{root:{
-                  marginTop:"32px",
-                  width:"100px"
-                }}}
-                style={{width:100}}
-                  id="txtNiagraversion"
-                  name={"versionhistory"}
-                  onChange={(e) => handlechange(e)}
-                  required
-                  errorMessage={Validation[0].versionhistory}
-                />:""}
+                {niaversion ? (
+                  <TextField
+                    styles={{
+                      root: {
+                        marginTop: '32px',
+                        width: '100px',
+                      },
+                    }}
+                    style={{ width: 100 }}
+                    id="txtNiagraversion"
+                    name={'versionhistory'}
+                    onChange={(e) => handlechange(e)}
+                    required
+                    errorMessage={Validation[0].versionhistory}
+                  />
+                ) : (
+                  ''
+                )}
               </div>
             </div>
             <div style={formRowStyle}>
-                {/* <ChoiceGroup
+              {/* <ChoiceGroup
               <div style={formColumnStyle}>
                   styles={inlineChoiceStyles}
                   label="Any speciality to built"
@@ -570,7 +580,7 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
                   onChange={_onChange}
                   // label="Pick one"
                   required={true}
-                /> 
+                />
               </div>*/}
               <div className="peoplepicker" style={formColumnStyle}>
                 {/*<PeoplePicker
@@ -588,7 +598,11 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
                   resolveDelay={1000}
                   ensureUser={true}
                 />*/}
-                <PeoplesData useremail={UserEmail} update={UpdateSelectedUsers} spcontext={props.spcontext}/>
+                <PeoplesData
+                  useremail={UserEmail}
+                  update={UpdateSelectedUsers}
+                  spcontext={props.spcontext}
+                />
               </div>
               <div style={formColumnStyle}>
                 <TextField
@@ -598,7 +612,7 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
                   resizable={false}
                   id="txtVendorManagerName"
                   // className="scopebox"
-                  name={"SharedLinks"}
+                  name={'SharedLinks'}
                   onChange={(e) => handlechange(e)}
                   required
                   errorMessage={Validation[0].SharedLinks}
@@ -607,24 +621,21 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
             </div>
             <div
               style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                marginTop: "1rem",
+                display: 'flex',
+                justifyContent: 'flex-end',
+                marginTop: '1rem',
               }}
             >
-              <PrimaryButton
-                text="Submit"
-                onClick={mandatoryvalidation}
-                style={{ marginRight: "1rem" }}
-              />
               <DefaultButton
                 text="Cancel"
+                style={{ marginRight: '1rem' }}
                 onClick={(e) => {
                   //saveattachments();
                   location.href =
-                    siteURL + "/SitePages/GeneralRequestDashboard.aspx";
+                    siteURL + '/SitePages/GeneralRequestDashboard.aspx'
                 }}
               />
+              <PrimaryButton text="Submit" onClick={mandatoryvalidation} />
             </div>
           </div>
 
@@ -636,112 +647,108 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
         </div>
       </div>
     </ThemeProvider>
-  );
+  )
 
   function handleattachemnts(e): void {
     if (e.target.files.length > 0)
-      Submitvalues[0]["Attachments"] = e.target.files;
-    else Submitvalues[0]["Attachments"] = [];
+      Submitvalues[0]['Attachments'] = e.target.files
+    else Submitvalues[0]['Attachments'] = []
 
-    setSubmitvalues([...Submitvalues]);
+    setSubmitvalues([...Submitvalues])
   }
 
-  function UpdateSelectedUsers(item)
-  {
-    console.log("Called parent function");
-    var selctedppls=[];
-    item.forEach(async element => {
-      await selctedppls.push(element.ID);
-    });
-    setSelectedpeoples(selctedppls);
+  function UpdateSelectedUsers(item) {
+    console.log('Called parent function')
+    var selctedppls = []
+    item.forEach(async (element) => {
+      await selctedppls.push(element.ID)
+    })
+    setSelectedpeoples(selctedppls)
   }
 
   function _onChange(ev: React.FormEvent<HTMLInputElement>, option: any) {
-    var name: string = ev.target["attributes"].name.value;
-    var value: boolean = false;
+    var name: string = ev.target['attributes'].name.value
+    var value: boolean = false
 
-      if(name == "NigVersion"&&option.text == "Yes") 
-      {
-        setniaversion(true);
+    if (name == 'NigVersion') {
+      if (option.text == 'Yes') {
+        setniaversion(true)
+      } else {
+        setniaversion(false)
+        Validation[0]['versionhistory'] = ''
+        Submitvalues[0]['versionhistory'] = ''
       }
-      else
-      {
-        setniaversion(false);
-        Validation[0]["versionhistory"] = "";
-        Submitvalues[0]["versionhistory"] ="";
-      }
-
-    if (name != "TypesoBid") {
-      if (option.text == "Yes") value = true;
-      else value = false;
+    } else if (name != 'TypesoBid') {
+      if (option.text == 'Yes') value = true
+      else value = false
 
       if (value) {
-        Validation[0][name] = "";
-        Submitvalues[0][name] = value;
+        Validation[0][name] = ''
+        Submitvalues[0][name] = value
       } else {
-        Submitvalues[0][name] = "";
+        Submitvalues[0][name] = ''
       }
-    } else 
-    {
+    } else {
       if (option.text) {
-        Validation[0][name] = "";
-        Submitvalues[0][name] = option.text;
+        Validation[0][name] = ''
+        Submitvalues[0][name] = option.text
       } else {
-        Submitvalues[0][name] = "";
+        Submitvalues[0][name] = ''
       }
     }
-    setValidation([...Validation]);
-    setSubmitvalues([...Submitvalues]);
+
+    setValidation([...Validation])
+    setSubmitvalues([...Submitvalues])
   }
 
   function handlechange(e): void {
-    var name: string = e.target.attributes.name.value;
-    var value: string = e.target.value;
+    var name: string = e.target.attributes.name.value
+    var value: string = e.target.value
     if (value) {
-      Validation[0][name] = "";
-      Submitvalues[0][name] = value;
+      Validation[0][name] = ''
+      Submitvalues[0][name] = value
     } else {
-      Submitvalues[0][name] = "";
+      Submitvalues[0][name] = ''
     }
 
-    setSubmitvalues([...Submitvalues]);
-    setValidation([...Validation]);
+    setSubmitvalues([...Submitvalues])
+    setValidation([...Validation])
   }
   function isEmail(email) {
-    var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    return regex.test(email);
+    var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/
+    return regex.test(email)
   }
   /*----------------------------------------mandatoryvalidation--------------------------------------*/
   function mandatoryvalidation(): void {
-    var isAllFieldsFilled: boolean = true;
+    var isAllFieldsFilled: boolean = true
 
     if (!Submitvalues[0].FirstName) {
-      Validation[0].FirstName = "Please Enter First Name";
-      isAllFieldsFilled = false;
+      Validation[0].FirstName = 'Please Enter First Name'
+      isAllFieldsFilled = false
     } else if (!Submitvalues[0].LastName) {
-      Validation[0].LastName = "Please Enter Last Name";
-      isAllFieldsFilled = false;
+      Validation[0].LastName = 'Please Enter Last Name'
+      isAllFieldsFilled = false
     } else if (!Submitvalues[0].Title) {
-      Validation[0].Title = "Please Enter Title";
-      isAllFieldsFilled = false;
+      Validation[0].Title = 'Please Enter Title'
+      isAllFieldsFilled = false
     } else if (!Submitvalues[0].CompanyName) {
-      Validation[0].CompanyName = "Please Enter Company Name";
-      isAllFieldsFilled = false;
+      Validation[0].CompanyName = 'Please Enter Company Name'
+      isAllFieldsFilled = false
     } else if (!Submitvalues[0].EmailId || !isEmail(Submitvalues[0].EmailId)) {
-      Validation[0].EmailId = "Please Enter Valid Email";
-      isAllFieldsFilled = false;
+      Validation[0].EmailId = 'Please Enter Valid Email'
+      isAllFieldsFilled = false
     } else if (!Submitvalues[0].PhoneNumber) {
-      Validation[0].PhoneNumber = "Please Enter Phone Number";
-      isAllFieldsFilled = false;
+      Validation[0].PhoneNumber = 'Please Enter Phone Number'
+      isAllFieldsFilled = false
     } else if (!Submitvalues[0].Address) {
-      Validation[0].Address = "Please Enter Address";
-      isAllFieldsFilled = false;
+      Validation[0].Address = 'Please Enter Address'
+      isAllFieldsFilled = false
     } else if (!Submitvalues[0].CompanyWebsite) {
-      Validation[0].CompanyWebsite = "Please Enter Company Website";
-      isAllFieldsFilled = false;
+      Validation[0].CompanyWebsite = 'Please Enter Company Website'
+      isAllFieldsFilled = false
     } else if (arrAccManager.length <= 0) {
-      Validation[0].LyAccMngr = "Please Enter Account Manager";
-      isAllFieldsFilled = false;
+      Validation[0].LyAccMngr = 'Please Enter Account Manager'
+      isAllFieldsFilled = false
     } /*else if (!Submitvalues[0].ProposalReq) {
       Validation[0].ProposalReq = "Please Enter Where is proposal required";
       isAllFieldsFilled = false;
@@ -751,38 +758,40 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
     } else if (!Submitvalues[0].WorkComplete) {
       Validation[0].WorkComplete = "Please Enter when must the work be completed";
       isAllFieldsFilled = false;
-    }*/else if (!Submitvalues[0].ImpoDate) {
-      Validation[0].ImpoDate = "Please Enter Important dates";
-      isAllFieldsFilled = false;
+    }*/ else if (
+      !Submitvalues[0].ImpoDate
+    ) {
+      Validation[0].ImpoDate = 'Please Enter Important dates'
+      isAllFieldsFilled = false
     } else if (!Submitvalues[0].Description) {
-      Validation[0].Description = "Please Enter Description";
-      isAllFieldsFilled = false;
+      Validation[0].Description = 'Please Enter Description'
+      isAllFieldsFilled = false
     } else if (!Submitvalues[0].AdditionalDetails) {
-      Validation[0].AdditionalDetails = "Please Enter Additional Details";
-      isAllFieldsFilled = false;
-    } 
-     /*else if (!Submitvalues[0].Scope) {
+      Validation[0].AdditionalDetails = 'Please Enter Additional Details'
+      isAllFieldsFilled = false
+    } else if (!Submitvalues[0].versionhistory && niaversion) {
+      /*else if (!Submitvalues[0].Scope) {
       Validation[0].Scope = "Please Enter scope";
       isAllFieldsFilled = false;
-    }*/else if (!Submitvalues[0].versionhistory&&niaversion) {
-      Validation[0].versionhistory = "Please Enter Version Details";
-      isAllFieldsFilled = false;
-    }  else if (!Submitvalues[0].SharedLinks) {
-      Validation[0].SharedLinks = "Please Enter Shared Links";
-      isAllFieldsFilled = false;
-    }/*else if (getSelectedUsers.length <= 0) {
+    }*/
+      Validation[0].versionhistory = 'Please Enter Version Details'
+      isAllFieldsFilled = false
+    } else if (!Submitvalues[0].SharedLinks) {
+      Validation[0].SharedLinks = 'Please Enter Shared Links'
+      isAllFieldsFilled = false
+    } /*else if (getSelectedUsers.length <= 0) {
       Validation[0].UserDetailsId = "Please Enter UserDetails";
       isAllFieldsFilled = false;
     }*/
 
-    setValidation([...Validation]);
+    setValidation([...Validation])
 
-    Submit(isAllFieldsFilled);
+    Submit(isAllFieldsFilled)
   }
 
   async function Submit(allvaluesfilled): Promise<void> {
     if (allvaluesfilled) {
-      await setColumn(true);
+      await setColumn(true)
       var requestdata = {
         FirstName: Submitvalues[0].FirstName,
         LastName: Submitvalues[0].LastName,
@@ -806,139 +815,139 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
         RemoteConnectivity: Submitvalues[0].RemoteConn,
         GraphicsRequired: Submitvalues[0].GraphicsReq,
         NiagaraVersion: Submitvalues[0].NigVersion,
-        Niaversionhistory:niaversion?Submitvalues[0].versionhistory:"",
+        Niaversionhistory: niaversion ? Submitvalues[0].versionhistory : '',
         SpecialityToBeBuilt: Submitvalues[0].Speciality,
         Begindate: beginDate,
         CompletionDate: completionDate,
-        ProposalDate:ProposalDate,
+        ProposalDate: ProposalDate,
         //UserDetailsId: { results: getSelectedUsers },
         UserDetailsId: { results: Selectedpeoples },
         AccountmangerId: { results: arrAccManager },
-      };
+      }
       await props.spcontext.lists
-        .getByTitle("GeneralQuoteRequestList")
+        .getByTitle('GeneralQuoteRequestList')
         .items.add(requestdata)
         .then(async function (data): Promise<void> {
-          await saveattachments();
+          await saveattachments()
         })
         .catch(function (error): void {
-          alert(error);
-        });
+          alert(error)
+        })
     }
   }
   function DialogBox(): void {
-    location.href = siteURL + "/SitePages/GeneralRequestDashboard.aspx";
+    location.href = siteURL + '/SitePages/GeneralRequestDashboard.aspx'
   }
 
   async function saveattachments() {
-    var file = Submitvalues[0].Attachments;
+    var file = Submitvalues[0].Attachments
     if (file.length > 0) {
-      if (file[0]["size"] <= 10485760) {
+      if (file[0]['size'] <= 10485760) {
         // small upload
         await props.spcontext
-          .getFolderByServerRelativeUrl("ProfessionalQuoteDocuments")
-          .files.add(file[0]["name"], file, true)
+          .getFolderByServerRelativeUrl('ProfessionalQuoteDocuments')
+          .files.add(file[0]['name'], file, true)
           .then(function (result) {
             result.file.listItemAllFields.get().then((listItemAllFields) => {
               // get the item id of the file and then update the columns(properties)
               props.spcontext.lists
-                .getByTitle("ProfessionalQuoteDocuments")
+                .getByTitle('ProfessionalQuoteDocuments')
                 .items.getById(listItemAllFields.Id)
                 .update({
                   OrderNo: NextOrderID,
                 })
                 .then((r) => {
-                  setColumn(false);
-                  setHidedialog(false);
+                  setColumn(false)
+                  setHidedialog(false)
                 })
                 .catch(function (error) {
-                  alert(error);
-                });
-            });
+                  alert(error)
+                })
+            })
           })
           .catch(function (error) {
-            alert(error);
-          });
+            alert(error)
+          })
       } else {
         // large upload
         await props.spcontext
-          .getFolderByServerRelativeUrl("ProfessionalQuoteDocuments")
+          .getFolderByServerRelativeUrl('ProfessionalQuoteDocuments')
           .files.addChunked(
-            file[0]["name"],
+            file[0]['name'],
             file,
             (data) => {
-              console.log({ data: data, message: "progress" });
+              console.log({ data: data, message: 'progress' })
             },
-            true
+            true,
           )
           .then(function (result) {
             result.file.listItemAllFields.get().then((listItemAllFields) => {
               // get the item id of the file and then update the columns(properties)
               props.spcontext.lists
-                .getByTitle("ProfessionalQuoteDocuments")
+                .getByTitle('ProfessionalQuoteDocuments')
                 .items.getById(listItemAllFields.Id)
                 .update({
                   OrderNo: NextOrderID,
                 })
                 .then((r) => {
-                  setColumn(false);
-                  setHidedialog(false);
+                  setColumn(false)
+                  setHidedialog(false)
                 })
                 .catch(function (error) {
-                  alert(error);
-                });
-            });
+                  alert(error)
+                })
+            })
           })
           .catch(function (error) {
-            alert(error);
-          });
+            alert(error)
+          })
       }
     } else {
-      setColumn(false);
-      setHidedialog(false);
+      setColumn(false)
+      setHidedialog(false)
     }
   }
   async function getUserID(event): Promise<void> {
-    Validation[0]["UserDetailsId"] = "";
-    setValidation([...Validation]);
+    Validation[0]['UserDetailsId'] = ''
+    setValidation([...Validation])
 
     if (event.length == 0) {
-      getSelectedUsers = [];
+      getSelectedUsers = []
     }
 
     for (let i = 0; i < event.length; i++) {
-      getSelectedUsers = [];
+      getSelectedUsers = []
       await props.spcontext.siteUsers
         .getByEmail(event[i].secondaryText)
         .get()
         .then(function (result) {
-          if (result.Id) getSelectedUsers.push(result.Id);
+          if (result.Id) getSelectedUsers.push(result.Id)
         })
         .catch(function (error) {
-          console.log(error);
-        });
+          console.log(error)
+        })
     }
   }
 
   async function getAccountmanager(event): Promise<void> {
-    Validation[0]["LyAccMngr"] = "";
-    setValidation([...Validation]);
+    Validation[0]['LyAccMngr'] = ''
+    setValidation([...Validation])
 
     if (event.length == 0) {
-      arrAccManager = [];
+      arrAccManager = []
     }
 
     for (let i = 0; i < event.length; i++) {
-      arrAccManager = [];
+      arrAccManager = []
       await props.spcontext.siteUsers
         .getByEmail(event[i].secondaryText)
         .get()
         .then(function (result) {
-          if (result.Id) arrAccManager.push(result.Id);
+          if (result.Id) arrAccManager.push(result.Id)
         })
         .catch(function (error) {
-          console.log(error);
-        });
+          console.log(error)
+        })
     }
   }
 
@@ -950,54 +959,48 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
   // }
 
   function autoIncrementCustomId(lastRecordId) {
-    let increasedNum = Number(lastRecordId.replace("GC-", "")) + 1;
-    let kmsStr = lastRecordId.substr(0, 3);
+    let increasedNum = Number(lastRecordId.replace('GC-', '')) + 1
+    let kmsStr = lastRecordId.substr(0, 3)
 
-    kmsStr = kmsStr + increasedNum.toString();
-    console.log(kmsStr);
-    NextOrderID = kmsStr;
+    kmsStr = kmsStr + increasedNum.toString()
+    console.log(kmsStr)
+    NextOrderID = kmsStr
   }
 
   async function getLastID() {
     await props.spcontext.lists
-      .getByTitle("GeneralQuoteRequestList")
-      .items.select("ID", "OrderNo")
+      .getByTitle('GeneralQuoteRequestList')
+      .items.select('ID', 'OrderNo')
       .top(1)
-      .orderBy("ID", false)
+      .orderBy('ID', false)
       .get()
       .then(function (data) {
         if (data.length > 0) {
-          autoIncrementCustomId(data[0].OrderNo);
+          autoIncrementCustomId(data[0].OrderNo)
         } else {
-          autoIncrementCustomId("GC-0");
+          autoIncrementCustomId('GC-0')
         }
       })
-      .catch(function (error) {});
+      .catch(function (error) {})
   }
 
   async function getBidTypes() {
     await props.spcontext.lists
-      .getByTitle("GeneralQuoteRequestList")
+      .getByTitle('GeneralQuoteRequestList')
       .fields.filter("EntityPropertyName eq 'TypeofBid'")
       .get()
-      .then(function (data) 
-      {
-        if (data.length > 0) 
-        {
-          console.log(data);
-            optionsForBid=[];
-            data[0].Choices.map(function(val,key)
-            {
-              optionsForBid.push({key:key,text:val});
-            })
-            setBidTypes(optionsForBid);
-
+      .then(function (data) {
+        if (data.length > 0) {
+          console.log(data)
+          optionsForBid = []
+          data[0].Choices.map(function (val, key) {
+            optionsForBid.push({ key: key, text: val })
+          })
+          setBidTypes(optionsForBid)
         } else {
-          
         }
       })
-      .catch(function (error) {});
+      .catch(function (error) {})
   }
-
 }
-export { NWFQuoteform };
+export { NWFQuoteform }

@@ -351,6 +351,7 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
                   multiline
                   rows={3}
                   name={"Address"}
+                  resizable={false}
                   onChange={(e) => handlechange(e)}
                   required
                   errorMessage={Validation[0].Address}
@@ -441,6 +442,7 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
                   label="Important Dates / Milestones"
                   multiline
                   rows={3}
+                  resizable={false}
                   id="txtVendorManagerName"
                   name={"ImpoDate"}
                   onChange={(e) => handlechange(e)}
@@ -453,6 +455,7 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
                   label="Description of Scope"
                   multiline
                   rows={3}
+                  resizable={false}
                   id="txtVendorManagerEmailID"
                   name={"Description"}
                   onChange={(e) => handlechange(e)}
@@ -465,6 +468,7 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
                   label="Additional Details"
                   multiline
                   rows={3}
+                  resizable={false}
                   id="txtVendorManagerName"
                   name={"AdditionalDetails"}
                   onChange={(e) => handlechange(e)}
@@ -591,6 +595,7 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
                   label="Proj. Docs Shared Links"
                   multiline
                   rows={3}
+                  resizable={false}
                   id="txtVendorManagerName"
                   // className="scopebox"
                   name={"SharedLinks"}
@@ -702,7 +707,10 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
     setSubmitvalues([...Submitvalues]);
     setValidation([...Validation]);
   }
-
+  function isEmail(email) {
+    var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    return regex.test(email);
+  }
   /*----------------------------------------mandatoryvalidation--------------------------------------*/
   function mandatoryvalidation(): void {
     var isAllFieldsFilled: boolean = true;
@@ -719,8 +727,8 @@ function NWFQuoteform(props: INwfQuoteRequestProps): React.ReactElement<[]> {
     } else if (!Submitvalues[0].CompanyName) {
       Validation[0].CompanyName = "Please Enter Company Name";
       isAllFieldsFilled = false;
-    } else if (!Submitvalues[0].EmailId) {
-      Validation[0].EmailId = "Please Enter Email";
+    } else if (!Submitvalues[0].EmailId || !isEmail(Submitvalues[0].EmailId)) {
+      Validation[0].EmailId = "Please Enter Valid Email";
       isAllFieldsFilled = false;
     } else if (!Submitvalues[0].PhoneNumber) {
       Validation[0].PhoneNumber = "Please Enter Phone Number";

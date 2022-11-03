@@ -447,6 +447,7 @@ export default function NWDashBoardAdmin(
       )}
       <Dialog
         hidden={hideDialog}
+        title="Shared With"
         onDismiss={toggleHideDialog}
         modalProps={modelProps}
       >
@@ -454,9 +455,6 @@ export default function NWDashBoardAdmin(
           className="DialogBtn"
           style={{ marginBottom: '2rem', position: 'relative' }}
         >
-          {/* <div>
-          <h3>Shared With</h3>
-        </div> */}
           <TextField
             style={{
               position: 'absolute',
@@ -544,6 +542,7 @@ export default function NWDashBoardAdmin(
         'CompanyName',
         'ID',
         'Author/ID',
+        'Author/EMail',
         'SharedWith/ID',
         'SharedWith/Title',
         'SharedWith/EMail',
@@ -574,7 +573,7 @@ export default function NWDashBoardAdmin(
               console.log(e)
             }
           }
-          if (userBelongsToNWFCompany || isUsersSharedForthisdata != false) {
+          if (userBelongsToNWFCompany || isUsersSharedForthisdata != false || data[k].Author.EMail == UserEmail) {
             var newitem: IColumns = {
               Title: data[k].Title,
               ID: data[k].ID,
